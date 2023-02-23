@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>OpenAI Chatbot</title>
+	<script src="https://cdn.jsdelivr.net/npm/@openai/api@0.3.0/dist/openai-api.min.js"></script>
+</head>
+<body>
+	<h1>OpenAI Chatbot</h1>
+	<div>
+		<label for="question">Ask me anything:</label>
+		<input type="text" id="question" name="question">
+		<button type="button" onclick="askQuestion()">Ask</button>
+	</div>
+	<div id="response"></div>
+	<script>
+		const openai = new OpenAI(api_key='YOUR_API_KEY');
+
+		async function askQuestion() {
+			const question = document.getElementById('question').value;
+			const prompt = `Q: ${question}\nA: `;
+			const completions = await openai.complete({
+				model: 'davinci',
+				prompt: prompt,
+				max_tokens: 100,
+				n: 1,
+				stop: ['\n']
+			});
+			const answer = completions.choices[0].text.trim();
+			const responseDiv = document.getElementById('response');
+			responseDiv.innerHTML = `<p>Q: ${question}</p><p>A: ${answer}</p>`;
+		}
+	</script>
+</body>
+</html>
